@@ -41,7 +41,7 @@ class UserController extends \yii\web\Controller
 
 // if ($bool) {
 //     $arr['token'] = $user->token;
-//     $arr['userId'] = $user->id;
+//     $arr['userId'] = $usdser->id;
 //     $arr['dateUnlock'] = $user->dateUnlock;
 //     if ($user->isAdmin) {
 //       $arr['role'] = 'admin';
