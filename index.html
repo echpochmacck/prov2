@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>SportBlog</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/aos.css">
+    <link rel="stylesheet" href="css/ionicons.min.css">
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/jquery.timepicker.css">
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/icomoon.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/daterangepicker.css">
+    <style>
+        .not-active {
+            display: none;
+        }
+
+        .active{
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="colorlib-page">
+        <aside id="colorlib-aside" role="complementary" class="js-fullheight">
+            <nav id="colorlib-main-menu" role="navigation">
+                <ul>
+                    <li><a class="colorlib-active link" href="" data-section="index">Главная</a></li>
+                    <li><a class="link" href="" data-section="blogs" data-pag="0" data-test="test">Блоги</a></li>
+                    <li class="about" id="about"><a class="link" href="" data-section="about">О нас</a></li>
+                    <li class="identity_user"><a class="link" href="" data-section="login">Вход</a> / <a class="link"
+                            href="" data-section="register">Регистрация</a></li>
+                    <li class="admin not-active"><a class="link" href="" data-section="users">Пользователи</a></li>
+                    <li class="not-active exting_user"><a class="link" href="" data-section="exting">Выход</a></li>
+                </ul>
+            </nav>
+        </aside> <!-- END MENU -->
+        <div id="colorlib-main">
+
+            <!-- index -->
+            <section class="ftco-no-pt ftco-no-pb index">
+                <div class="container">
+                    <div class="row d-flex">
+                        <div class="col-xl-8 py-5 px-md-2">
+                            <div class="row pt-md-4 list-10-posts">
+                                <!-- List 10 posts -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- blogs -->
+            <section class="ftco-no-pt ftco-no-pb not-active blogs">
+                <div class="container">
+                    <div class="row d-flex">
+                        <div class="col-xl-8 col-md-8 py-5 px-md-2 page-blogs">
+                            <div class="menu-action">
+                                <div class="row div-creat-post not-active">
+                                    <div class="col-md-12 col-lg-12">
+                                        <div>
+                                            <a href="" class="btn btn-outline-success link"
+                                                data-section="post-action">📝 Создать пост</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="list-posts">
+                                <!-- blogs -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- users -->
+            <section class="contact-section px-md-4 pt-5 not-active users">
+                <div class="container" style="height: 100%">
+                    <div class="row block-9">
+						<div class="col-lg-12">
+							<div class="row">
+								<div class="col-md-12 mb-1">
+									<h3 class="h3">Пользователи</h3>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 mb-1">
+									<table class="table table-striped">
+										<thead>
+											<tr>
+												<th scope="col">#</th>
+												<th scope="col">Name</th>
+												<th scope="col">Surname</th>
+												<th scope="col">Login</th>
+
+												<th scope="col">E-mail</th>
+												<th scope="col">Temp block</th>
+												<th scope="col">Permanent block</th>
+											</tr>
+										</thead>
+										<!-- <tbody>
+											<tr>
+												<th scope="row">1</th>
+												<td>Mark</td>
+												<td>Otto</td>
+												<td>dfg</td>
+												<td>@mdo</td>
+												<td>
+													<a href="temp-block.html" class="btn btn-outline-warning px-4" >⏳ Block</a>
+												</td>
+												<td>
+													<a href="#" class="btn btn-outline-danger px-4">📌 Block</a>
+												</td>
+											</tr>
+											<tr>
+												<th scope="row">2</th>
+												<td>Mark</td>
+												<td>Otto</td>
+												<td>dfg</td>
+												<td>@mdo</td>
+												<td>
+													<a href="temp-block.html" class="btn btn-outline-warning px-4">⏳ Block</a>
+												</td>
+												<td>
+													<a href="#" class="btn btn-outline-danger px-4">📌 Block</a>
+												</td>
+											</tr>
+											<tr>
+												<th scope="row">3</th>
+												<td>Mark</td>
+												<td>Otto</td>
+												<td>dfg</td>
+												<td>@mdo</td>
+												<td>
+													<a href="temp-block.html" class="btn btn-outline-warning px-4">⏳ Block</a>
+												</td>
+												<td>
+													<a href="#" class="btn btn-outline-danger px-4">📌 Block</a>
+												</td>
+											</tr>
+
+										</tbody> -->
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+                </div>
+            </section>
+
+            <section class="contact-section px-md-2   pt-5 not-active temp-block-form">
+                <div class="container">
+                    <div class="row d-flex contact-info">
+                        <div class="col-md-12 mb-1">
+                            <h2 class="h3">Временная блокировка пользователя</h2>
+                            <div>
+                                <!-- Пользователь: <?=$user->request->get('loogin')?> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row block-9">
+                        <div class="col-lg-6 d-flex">
+                            <form action="#" class="bg-light p-5 contact-form tempblockform" method="POST">
+                                <div class="form-group">
+                                    <label for="date-block">Дата временной блокировки</label>
+                                    <input type="text" class="form-control" id="date-block" name="date_block" value="" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Блокировать" class="btn btn-primary py-3 px-5">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="contact-section px-md-2 not-active pt-5 forever-block">
+                <div class="container">
+                    <div class="row d-flex contact-info">
+                        <div class="col-md-12 mb-1">
+                            <h2 class="h3"> блокировка пользователя</h2>
+                            <div>
+                                <!-- Пользователь: <?=$user->request->get('loogin')?> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row block-9">
+                        <div class="col-lg-6 d-flex">
+                            <form action="#" class="bg-light p-5 contact-form forever-block-form" method="POST">
+                                <div class="form-group">
+                                    <label for="date-block">Причина блокировки</label>
+                                    <input type="text" class="form-control" id="date-block" name="couse" value="" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Блокировать" class="btn btn-primary py-3 px-5">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- about -->
+            <section class="ftco-about img ftco-section ftco-no-pt ftco-no-pb not-active about">
+                <div class="container-fluid px-0" style="height: 100%">
+                    <div class="row d-flex mt-5">
+                        <div class="col-md-6 d-flex align-items-center">
+                            <div class="text px-4 pt-5 pt-md-0 px-md-4 pr-md-5 ftco-animate">
+                                <h2 class="mb-4">Добро пожаловать на наш сайт о <span>спорте</span>!</h2>
+                                <p>Мы - команда энтузиастов, объединенных страстью к спорту. Наша цель - делиться
+                                    последними новостями, увлекательными историями
+                                    и полезными советами из мира спорта. Независимо от того, являетесь ли вы
+                                    профессиональным спортсменом, любителем или просто интересуетесь
+                                    физической активностью, здесь вы найдете информацию, которая поможет вам достичь
+                                    новых высот и наслаждаться здоровым образом жизни. </p>
+                                <p>На нашем сайте вы можете найти статьи о различных видах спорта, создавать свои
+                                    собственные, участвовать в обсуждениях и делиться своими мнениями.</p>
+                                <p>Благодарим вас за посещение нашего сайта о спорте. Мы надеемся, что вы найдете здесь
+                                    много интересной и полезной информации.
+                                    Присоединяйтесь к нам и вместе будем вдохновляться спортом!</p>
+                                <p>Данная система разработана студентом Радиотехнического колледжа, группы ИВ1-21,
+                                    Семеновым Даниилом</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- login -->
+            <section class="contact-section px-md-2  pt-5 not-active login">
+                <div class="container" style="height: 100%">
+                    <div class="row d-flex contact-info">
+                        <div class="col-md-12 mb-1">
+                            <h2 class="h3 log">Авторизация</h2>
+                        </div>
+                    </div>
+                    <div class="row block-9">
+                        <div class="col-lg-6 d-flex">
+                            <form action="" class="bg-light p-5 contact-form log-form" id ="form" method="POST" >
+                                <div class="form-group">
+                                    <input type="text" class="form-control is-invalid" placeholder="Your Login" id="login" name="login">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control is-invalid" placeholder="Password" id="password" name="password">
+                                    <!-- <div class="invalid-feedback">
+                                        
+                                    </div> -->
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Вход" class="btn btn-primary py-3 px-5">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- register -->
+            <section class="contact-section px-md-2 pt-5 not-active register">
+                <div class="container">
+                    <div class="row d-flex contact-info">
+                        <div class="col-md-12 mb-1">
+                            <h2 class="h3">Регистрация</h2>
+                        </div>
+        
+                    </div>
+                    <div class="row block-9">
+                        <div class="col-lg-6 d-flex">
+        
+                            <form class="bg-light p-5 contact-form reg-form" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Your Name" name="name">
+        
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Your Surname" name="surname">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Your Patronymic" name="patronymic">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control is-invalid"
+                                     placeholder="Your Login" name="login">
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control is-invalid" placeholder="Your Email" name="email">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control is-invalid" placeholder="Password" name="password">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control is-invalid" placeholder="Password repeat" name="password_repeat">
+                                </div>
+                                <div class="form-group">
+                                    avatar: </br>
+                                    <input type="file" name='avatar'>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input is-invalid" type="checkbox" value="" id="rules" aria-describedby="invalidCheck3Feedback" required>
+                                        <label class="form-check-label" for="rules">
+                                            Rules
+                                        </label>
+                                        <div id="rulesFeedback" class="invalid-feedback">
+                                            Необходимо согласиться с правилами регистрации.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Регистрация" class="btn btn-primary py-3 px-5">
+                                </div>
+                            </form>
+        
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- post-action -->
+            <section class="contact-section px-md-2 pt-5 not-active post-action">
+                <div class="container">
+                    <div class="row d-flex contact-info">
+                        <div class="col-md-12 mb-1">
+                            <h2 class="h3">Создание поста</h2>
+                        </div>
+                    </div>
+                    <div class="row block-9">
+                        <div class="col-lg-6 d-flex">
+                            <form action="" class="bg-light p-5 contact-form post-action-form" method="POST"
+                                enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <input type="text" class="form-control title" placeholder="Post title" name="title">
+                                    <!-- <div class="invalid-feedback title-message"></div> -->
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control preview" placeholder="Post preview"
+                                        name="preview">
+                                    <!-- <div class="invalid-feedback preview-message"></div> -->
+                                </div>
+                                <div class="form-group">
+                                    <textarea id="" cols="30" rows="10" class="form-control content"
+                                        placeholder="Post content" name="content"></textarea>
+                                    <!-- <div class="invalid-feedback content-message"></div> -->
+                                </div>
+
+                                <!-- <div class="form-group past_image_post not-active">
+                                    <img src="" class="img-fluid past_image_post" />
+                                </div> -->
+
+                                <div class="form-group">
+                                    <input name="upload_image_post" type="file" id="input_file_post"
+                                        class="field field__file form-control input_file upload_image_post" name="image">
+                                    <!-- <div class="invalid-feedback upload_image_post-message"></div> -->
+                                    <!-- <label class="field__file-wrapper" for="input_file_post">
+                                        <div class="field__file-button">Выбрать</div>
+                                        <div class="field__file-fake">Выберите изображение поста</div>
+                                    </label>
+                                    <img src="" class="img-fluid upload_image" /><br>
+                                    <a href="" class="not-active cancel_image">Очистить выбранное изображение</a>
+                                </div> -->
+
+                                <div class="form-group">
+                                    <button class="btn btn-primary py-3 px-5 creat-post-btn">Опубликовать</button>
+                                </div>
+                                <!-- <a href="" class="cance-post-action link" data-section="blogs">Отмена</a> -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- post -->
+            <section class="ftco-no-pt ftco-no-pb not-active post">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 px-md-3 py-5 post-content">
+                            <!-- POST -->
+                        </div>
+                    </div><!-- END-->
+                </div>
+            </section>
+
+
+        </div><!-- END COLORLIB-MAIN -->
+    </div><!-- END COLORLIB-PAGE -->
+
+    <div id="ftco-loader" class="show fullscreen">
+        <svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                stroke="#F96D00" />
+        </svg>
+    </div>
+
+    <script src="js/jquery-3.7.1.js"></script>
+    <!-- <script src="js/jquery.min.js"></script> -->
+    <script src="js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+    <script src="js/jquery.waypoints.min.js"></script>
+    <script src="js/jquery.stellar.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/aos.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.animateNumber.min.js"></script>
+    <script src="js/scrollax.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="css/moment.min.js"></script>
+    <script src="css/daterangepicker.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#rules').click(function (e) {
+                if (this.checked) {
+                    $(this).removeClass('is-invalid');
+                    $(this).addClass('is-valid');
+                } else {
+                    $(this).removeClass('is-invalid');
+                    $(this).removeClass('is-valid');
+                }
+
+                $('#rulesFeedback').toggleClass('d-none');
+            })
+        });
+    </script>
+        
+
+    <script type="module" src="js/mainScript.js"></script>
+</body>
+
+</html>
