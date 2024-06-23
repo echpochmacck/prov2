@@ -12,7 +12,7 @@ function getReg() {
 	console.log(formData);
 	$.ajax({
 		type: "POST",
-		url: "./files-php/php-parts/register-form.php", 
+		url: "./yiitest/web/user/register", 
 		processData: false,
 		contentType: false,
 		data: formData,
@@ -22,7 +22,7 @@ function getReg() {
 			if (obj.token) {
 				sessionStorage.setItem('userToken', obj.token);
 				sessionStorage.setItem('role', obj.role);
-				sessionStorage.setItem('id', obj.userId);
+				sessionStorage.setItem('id', obj.id);
 				$('.identity_user').addClass('not-active');
 				$('.exting_user').removeClass('not-active');
 				posts();

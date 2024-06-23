@@ -27,6 +27,7 @@ use Yii;
  */
 class User1 extends \yii\db\ActiveRecord
 {
+    public string $password_repeat = '';
     /**
      * {@inheritdoc}
      */
@@ -44,6 +45,7 @@ class User1 extends \yii\db\ActiveRecord
             [['name', 'surname', 'login', 'email', 'password'], 'required'],
             [['dateUnlock'], 'safe'],
             [['role_id'], 'integer'],
+            [['password_repeat'], 'required'],
             [['name', 'surname', 'patronymic', 'login', 'email', 'password', 'token'], 'string', 'max' => 255],
             [['login'], 'unique'],
             [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::class, 'targetAttribute' => ['role_id' => 'id']],
@@ -52,7 +54,6 @@ class User1 extends \yii\db\ActiveRecord
 
 
    
-
     // public function isAdmin()
     // {
     //     if ($this->role_id == )

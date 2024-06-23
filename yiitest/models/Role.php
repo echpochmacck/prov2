@@ -33,6 +33,13 @@ class Role extends \yii\db\ActiveRecord
         ];
     }
 
+
+    public static function isAdmin(string $user_role_id): bool
+    {
+        // var_dump(Role::findOne(['title' => 'admin'])->id);die;
+        return $user_role_id == Role::findOne(['title' => 'admin'])->id;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -53,6 +60,4 @@ class Role extends \yii\db\ActiveRecord
     {
         return $this->hasMany(User::class, ['role_id' => 'id']);
     }
-
-    
 }
