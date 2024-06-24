@@ -78,7 +78,7 @@ class PostController extends \yii\web\Controller
                     $post->save();
                     $arr = $post->attributes;
                     if (!$_FILES['upload_image_post']['error']) {
-                        // var_dump($_FILES['error']);die;
+                        // var_dumdsp($_FILES['error']);die;
                         $file = new File();
                         $file->imageFile = UploadedFile::getInstanceByName('upload_image_post');
                         $file->post_id = $post->findOne(['user_id' => $post->user_id, 'date' => $post->date])->id;
