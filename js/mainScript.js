@@ -116,7 +116,6 @@ $(() => {
                 // console.log($(this).data('id'));
                 deleteComment($(this).data('id'));
                 postContent($(this).data('postid'))
-                // console.log('удалить коммент');
                 break;
             case 'users':
                 // console.log('users');

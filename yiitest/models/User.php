@@ -2,103 +2,146 @@
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
+use Yii;
+
+/**
+ * This is the model class for table "user".
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $surname
+ * @property string|null $patronymic
+ * @property string $login
+ * @property string $email
+ * @property string $password
+ * @property string|null $dateUnlock
+ * @property string|null $token
+ * @property int|null $role_id
+ *
+ * @property Avatar[] $avatars
+ * @property Banforever[] $banforevers
+ * @property Banforever[] $banforevers0
+ * @property Comment[] $comments
+ * @property Post[] $posts
+ * @property Role $role
+ */
+class User extends \yii\db\ActiveRecord
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
-
+    public string $password_repeat = '';
     /**
      * {@inheritdoc}
      */
-    public static function findIdentity($id)
+    public static function tableName()
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return 'user';
+    }
+
+    public function login() 
+    {
+        
+        $this->token = yii::$app->security->generateRandomString();
+        $this->save('token');
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public function rules()
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
+        return [
+            [['name', 'surname', 'login', 'email', 'password'], 'required'],
+            [['dateUnlock'], 'safe'],
+            [['role_id'], 'integer'],
+            [['password_repeat'], 'required'],
+            [['name', 'surname', 'patronymic', 'login', 'email', 'password', 'token'], 'string', 'max' => 255],
+            [['login'], 'unique'],
+            [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::class, 'targetAttribute' => ['role_id' => 'id']],
+        ];
+    }
 
-        return null;
+
+   
+    // public function isAdmin()
+    // {
+    //     if ($this->role_id == )
+    // }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'name' => 'Name',
+            'surname' => 'Surname',
+            'patronymic' => 'Patronymic',
+            'login' => 'Login',
+            'email' => 'Email',
+            'password' => 'Password',
+            'dateUnlock' => 'Date Unlock',
+            'token' => 'Token',
+            'role_id' => 'Role ID',
+        ];
     }
 
     /**
-     * Finds user by username
+     * Gets query for [[Avatars]].
      *
-     * @param string $username
-     * @return static|null
+     * @return \yii\db\ActiveQuery
      */
-    public static function findByUsername($username)
+    public function getAvatars()
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return $this->hasMany(Avatar::class, ['user_id' => 'id']);
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
-
-    /**
-     * Validates password
+     * Gets query for [[Banforevers]].
      *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
+     * @return \yii\db\ActiveQuery
      */
-    public function validatePassword($password)
+    public function getBanforevers()
     {
-        return $this->password === $password;
+        return $this->hasMany(Banforever::class, ['admin_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Banforevers0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBanforevers0()
+    {
+        return $this->hasMany(Banforever::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Comments]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComments()
+    {
+        return $this->hasMany(Comment::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Posts]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPosts()
+    {
+        return $this->hasMany(Post::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Role]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRole()
+    {
+        return $this->hasOne(Role::class, ['id' => 'role_id']);
     }
 }

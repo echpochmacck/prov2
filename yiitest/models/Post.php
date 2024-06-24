@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\User;
 use Yii;
 
 /**
@@ -20,6 +21,10 @@ use Yii;
  */
 class Post extends \yii\db\ActiveRecord
 {
+    public object $user;
+
+    // public  $upload_image_post;
+
     /**
      * {@inheritdoc}
      */
@@ -34,7 +39,7 @@ class Post extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'title', 'content', 'date'], 'required'],
+            [['user_id', 'title', 'content'], 'required'],
             [['user_id'], 'integer'],
             [['preview', 'content'], 'string'],
             [['date'], 'safe'],
@@ -87,4 +92,6 @@ class Post extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
+
+    
 }

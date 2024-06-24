@@ -31,9 +31,11 @@ function commentForm(selector, postId, commentId ='') {
         formData.append('user_id', sessionStorage.getItem('id'));
         console.log(formData);
         // console.log(window.location.href);
+        // ./yiitest/web/user/login
+        // ./files-php/php-parts/createComment.php
         $.ajax({
             type: "POST",
-            url: "./files-php/php-parts/createComment.php",
+            url: "./yiitest/web/comment/create-comment",
             data: formData, 
             processData: false,
             contentType: false,

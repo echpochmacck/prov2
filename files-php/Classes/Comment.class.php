@@ -88,6 +88,7 @@ class Comment extends Data
             . 'where post_id = ' . $post_id
             . ' ORDER BY date, comment_id';
         $arr = [];
+
         if ($res = $mysql->querry($text)) {
             foreach ($res as $key => $value) {
                 $user = new User($request, $mysql);
@@ -95,6 +96,7 @@ class Comment extends Data
                 $arr[] = new static($user, $value['post_id'], $value);
             }
         }
+
         $mainArr = [];
         $arr = self::listOfComments($arr);
         return $arr;
@@ -117,9 +119,7 @@ class Comment extends Data
 
                 $arrk['id'] = $value->id;
                 $arrk['com'] = $value;
-
-                // var_dump($arrk['id']);
-
+                
                 $mainArr = self::probeg($mainArr, $arrk);
             }
         }
@@ -132,17 +132,9 @@ class Comment extends Data
         foreach ($arr as &$elem) {
 
             if ($elem['id'] === $ark['com']->comment_id) {
-
-                // if ($ark['id'] === '12') {
-
-                //     $elem['answer'][] = $ark;
-                //     // $elem['answer'][] = $ark;
-                //     var_dump($elem, $ark['com']->comment_id);
-                //     die;
-                // }
-
                 $elem['answer'][] = $ark;
             }
+
             if (!empty($elem['answer'])) {
                 $elem['answer'] = self::probeg($elem['answer'], $ark);
             }

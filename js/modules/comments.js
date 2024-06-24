@@ -5,13 +5,16 @@ function commentList(id) {
     <h3 class="mb-5 font-weight-bold">комментариев</h3>
     <ul class="comment-list">`;
 
+
+    // "./yiitest/web/comment/list-comment"
+    // ./files-php/php-parts/comments.php
     $.ajax({
         type: "GET",
-        url: "./files-php/php-parts/comments.php",
-        data: { postId: id },
+        url: "./yiitest/web/comment/list-comment",
+        data: { post_id: id },
         dataType: "json",
         success: function (response) {
-            // console.log(response);
+            console.log(response);
             // let html = '';
             html = probeg2(response, html);
             // console.log(html)
@@ -32,16 +35,15 @@ function commentList(id) {
 function probeg2(obj, html = '', lvl = 0) {
     
     for (let value in obj) {
-        console.log
         html += `<li class='comment' ${lvl ? `style='margin-left:${lvl * 100}px'` : ''}>`;
-        if (obj[value]['com']['user']['link']) {
+        if (obj[value]['com']['link']) {
             html += `<div class='vcard bio'>
-            <img src='./uploads/${obj[value]['com']['user']['link']}' alt='#'>
+            <img src='./uploads/${obj[value]['com']['link']}' alt='#'>
         </div>`;
         }
         html += `<div class='comment-body'>
         <div class='d-flex justify-content-between '><h3>
-        ${obj[value]['com']['user']['login']} ${lvl}</h3>`;
+        ${obj[value]['com']['login']} ${lvl}</h3>`;
         
         
         html += ` </div> <div class='meta'>${obj[value]['com']['date']}</div>
