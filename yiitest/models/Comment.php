@@ -45,6 +45,69 @@ class Comment extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function list(string $post_id): array
+    {
+        $comments = Comment::find()
+        ->select([
+            'comment.id',
+            'message',
+            'comment_id',
+            'post_id',
+            'date',
+            'user.login',
+            'link',
+        ])
+        ->where(['post_id' => $post_id])
+        ->asArray()
+        ->join('INNER JOIN', 'user', 'user.id = user.id')
+        ->join('INNER JOIN', 'avatar', 'user.id = avatar.user_id')
+        ->all();
+        
+        
+
+        $mainArr = [];
+        $arr = self::listOfComments($comments);
+        return $arr;
+    }
+
+    public static function  listOfComments(array $arr): array
+    {
+        $mainArr = [];
+        foreach ($arr as $key => $value) {
+            $arrk = [];
+
+            if (!$value['comment_id']) {
+
+                $arrk['id'] = $value['id'];
+                $arrk['com'] = $value;
+                $mainArr[] = $arrk;
+            } else {
+
+                $arrk['id'] = $value['id'];
+                $arrk['com'] = $value;
+                
+                $mainArr = self::probeg($mainArr, $arrk);
+            }
+        }
+
+        return $mainArr;
+    }
+
+    public static function probeg(array $arr, array $ark): array
+    {
+        foreach ($arr as &$elem) {
+
+            if ($elem['id'] === $ark['com']['comment_id']) {
+                $elem['answer'][] = $ark;
+            }
+            if (!empty($elem['answer'])) {
+                $elem['answer'] = self::probeg($elem['answer'], $ark);
+            }
+        }
+
+        return $arr;
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -13,14 +13,14 @@ function postAction(postId = '') {
     if (postId) {
         $.ajax({
             type: "get",
-            url: "./files-php/php-parts/post-content.php",
+            url:  "./yiitest/web/post/create-post",
             data: { postId: postId },
             dataType: "json",
             success: (response) => {
                 console.log(response);
                 $('.post-action-form input[name="title"]').val(response.title);
                 $('.post-action-form input[name="preview"]').val(response.preview);
-                $('.post-action-form input[name="content"]').val(response.content);
+                $('.post-action-form textarea[name="content"]').val(response.content);
 
 
             }
@@ -39,13 +39,19 @@ function postAction(postId = '') {
         console.log(formData);
         $.ajax({
             type: "POST",
-            url: "./files-php/php-parts/post-action.php",
+            url: "./yiitest/web/post/create-post",
             processData: false,
             contentType: false,
             data: formData,
             dataType: "json",
             success: function (response) {
-                 posts();
+                console.log(response);
+                if (response['errors']) {
+                    alert('гдето ошибка');
+                } else {
+
+                    posts();
+                }
             }
         });
     });
