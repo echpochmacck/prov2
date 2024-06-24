@@ -50,7 +50,7 @@ class PostController extends \yii\web\Controller
         if ($post_id = yii::$app->request->get('postId')) {
             $post = Post::findOne($post_id);
             echo json_encode($post->attributes);
-            // var_dump($pdost);die; 
+            // var_dump($post);die; 
         }
 
         if (yii::$app->request->isPost) {
