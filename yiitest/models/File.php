@@ -14,6 +14,7 @@ use Yii;
  *
  * @property Post $post
  */
+
 class File extends \yii\db\ActiveRecord
 {
     // const SCENARIO_UPLOAD = 'upload';
@@ -44,7 +45,6 @@ class File extends \yii\db\ActiveRecord
 
     public function upload()
     {
-        // var_dump('dsad');die;
         if ($this->validate()) {
             // var_dump($this->imageFile, __DIR__.'/../../uploads/'. $this->imageFile->name. '.' .pathinfo($this->imageFile->name, PATHINFO_EXTENSION));die;
             $extension = $this->imageFile->getExtension();

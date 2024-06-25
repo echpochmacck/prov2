@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\models\User;
+use yii\web\UploadedFile;
 use Yii;
 
 /**
@@ -21,9 +22,9 @@ use Yii;
  */
 class Post extends \yii\db\ActiveRecord
 {
-    public object $user;
 
-    // public  $upload_image_post;
+
+    public  $imageFile;
 
     /**
      * {@inheritdoc}
@@ -44,6 +45,7 @@ class Post extends \yii\db\ActiveRecord
             [['preview', 'content'], 'string'],
             [['date'], 'safe'],
             [['title'], 'string', 'max' => 255],
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -61,6 +63,116 @@ class Post extends \yii\db\ActiveRecord
             'content' => 'Content',
             'date' => 'Date',
         ];
+    }
+
+
+    public static function checkNumber($post_id)
+    {
+        // var_dump($post_id);die;
+        $numberofComments = Comment::find()
+            ->select('*')
+            ->where(['post_id' => $post_id]);
+        // ->one();
+        $numberofComments = $numberofComments->count();
+        return $numberofComments;
+    }
+
+
+
+    public static function redPost(string $post_id)
+    {
+        $post = Post::findOne($post_id);
+        $post->load(yii::$app->request->post(), '');
+        if (!$_FILES['upload_image_post']['error']) {
+            // var_dumdsp($_FILES['error']);die;
+            $link = File::find()
+                ->where(['post_id' => $post_id])
+                ->select(['link'])
+                ->asArray()
+                ->one();
+            // var_dump($link);die;
+            if ($link) {
+                if (file_exists(__DIR__ . '/../../uploads/' . $link['link'])) {
+                    unlink(__DIR__ . '/../../uploads/' . $link['link']);
+                }
+            }
+            $file = File::findOne(['post_id' => $post_id]);
+            $file->imageFile = UploadedFile::getInstanceByName('upload_image_post');
+            $file->post_id = $post
+                ->findOne(['user_id' => $post->user_id, 'date' => $post->date])
+                ->id;
+            if ($file->upload()) {
+                $res = $file->save();
+            }
+            $arr['link'] = $file->link;
+        }
+        if ($post->validate()) {
+            $post->save(true);
+            $arr['errors'] = '';
+        } else {
+            $arr['errors'] = 'ошибка в полях';
+        }
+    }
+
+    public static function createPost()
+    {   
+        $post = new Post();
+        $post->load(yii::$app->request->post(), '');
+        $post->date = date('Y-m-d H:i:s');
+        // var_dump($post);die;
+        if ($post->validate()) {
+            $post->save();
+            $arr = $post->attributes;
+            if (!$_FILES['upload_image_post']['error']) {
+                // var_dumdsp($_FILES['error']);die;
+                $file = new File();
+                $file->imageFile = UploadedFile::getInstanceByName('upload_image_post');
+                $file->post_id = $post
+                    ->findOne(['user_id' => $post->user_id, 'date' => $post->date])
+                    ->id;
+                // загрузка и сейв в бд
+                if ($file->upload()) {
+                    $res = $file->save();
+                }
+                $arr['link'] = $file->link;
+            }
+            // var_dump($arr);
+            // die;
+            $arr['errors'] = '';
+        } else {
+            $arr['errors'] = 'ошибка в полях';
+        }
+    }
+
+    public static function queryToDelPost(string $post_id)
+    {
+        $link = File::find()
+            ->where(['post_id' => $post_id])
+            ->select(['link'])
+            ->asArray()
+            ->one();
+        if ($link) {
+            if (file_exists(__DIR__ . '/../../uploads/' . $link['link'])) {
+                unlink(__DIR__ . '/../../uploads/' . $link['link']);
+            }
+        }
+        $post = Self::findOne($post_id);
+        $post->delete();
+    }
+    public static function deletePost(string $user_id, string $post_id, bool $isAdmin = false)
+    {
+        $result = false;
+        if ($isAdmin) {
+            Self::queryToDelPost($post_id);
+            $arr['answer'] = 'успешно удалил';
+            $result = true;
+        } else {
+            if (!Self::checkNumber($post_id)) {
+                Self::queryToDelPost($post_id);
+                $result = true;
+            }
+        }
+        return $result;
     }
 
     /**
@@ -92,6 +204,4 @@ class Post extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
-
-    
 }

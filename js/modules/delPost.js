@@ -3,11 +3,13 @@ import posts from "./10posts.js";
 function deletePost (user_id, postId, role) {
     const data = {};
     data.user_id = user_id;
-    data.postId = postId;
+    data.post_id = postId;
     data.role = role;
+    // "./yiitest/web/post/ten-posts",
+    // ./files-php/php-parts/deletePost.php
     $.ajax({
         type: "POST",
-        url: "./files-php/php-parts/deletePost.php",
+        url: "./yiitest/web/post/delete-post",
         data: data,
         dataType: "json",
         success: function (response) {

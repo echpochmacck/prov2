@@ -16,32 +16,29 @@ class UserController extends \yii\web\Controller
         }
         return parent::beforeAction($action);
     }
+
     public function actionLogin()
     {
         if (Yii::$app->request->isPost) {;
-            $post = Yii::$app->request->post();
-           
-
+            $post = Yii::$app->request->post();        
             if ($user = User::findOne(['login' => $post['login']])) {
                 if (password_verify($post['password'], $user->password)) {
                     $user->login();
                       
-                    if (Role::isAdmin($user->role_id)) {
+                    if (Role::isAdmin($user->id)) {
                         $arr['role'] = 'admin';
                     } else {
                         $arr['role'] = 'avtor';
                     }
+
                     $arr['token'] = $user->token;
                     $arr['id'] = $user->id;
-                    echo json_encode($arr);
-                    // var_dump($user);die;
+                   return $this->asJson($arr);
                 }
             } else {
                 $arr['error'] = 'Неверный логин или пароль';
-                echo json_encode($arr);
-                die;
+                return $this->asJson($arr);
             }
-            
         }
     }
 
@@ -52,20 +49,18 @@ class UserController extends \yii\web\Controller
         if (Yii::$app->request->isPost) {;
             $post = Yii::$app->request->post();
             $user = new User();
+            $user->scenario = User::SCENARIO_REGISTER;
             $user->load($post, '');
-            // var_dump($user);die;
 
             if ($user->validate()) {
-                // var_dump($user);die;
                 if ($user->password === $user->password_repeat) {
-
                     $user->password = Yii::$app->getSecurity()->generatePasswordHash($user->password);
                     $user->token = yii::$app->security->generateRandomString();
                     
-                    $user->save('token');
+                    $user->save();
 
                     $user->role_id = 1;
-                    if (Role::isAdmin($user->role_id)) {
+                    if (Role::isAdmin($user->id)) {
                         $arr['role'] = 'admin';
                     } else {
                         $arr['role'] = 'avtor';
@@ -73,14 +68,12 @@ class UserController extends \yii\web\Controller
                     $user->save();
                     $arr['token'] = $user->token;
                     $arr['id'] = $user->id;
-                    // echo json_encode($arr);
-                    // var_dump($user); die;
+                   return $this->asJson($arr);
                 }
             } else {
-                echo 'не зашел';die;
+                echo 'не зашел';
                 $arr['error'] = 'Неверный логин или пароль';
-                echo json_encode($arr);
-                die;
+              return $this->asJson($arr);
             }
             
         }
@@ -88,15 +81,3 @@ class UserController extends \yii\web\Controller
     }
 }
 
-// if ($bool) {
-//     $arr['token'] = $user->token;
-//     $arr['userId'] = $usdser->id;
-//     $arr['dateUnlock'] = $user->dateUnlock;
-//     if ($user->isAdmin) {
-//       $arr['role'] = 'admin';
-//     } else $arr['role'] = 'avtor';
-//   } else {
-//     $arr['error'] = 'Неверный логин или пароль';
-//   }
-//   $arr = json_encode($arr);
-//   echo $arr;

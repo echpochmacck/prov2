@@ -28,7 +28,7 @@ function loginn() {
     // dataType: "json",
     success: function (response) {
       // console.log(response);
-      const obj = $.parseJSON(response);
+      const obj =response ;
       console.log(obj);
       if (obj.token) {
         // console.log(obj['dateUnlock'])

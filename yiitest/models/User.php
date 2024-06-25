@@ -27,6 +27,10 @@ use Yii;
  */
 class User extends \yii\db\ActiveRecord
 {
+
+    const SCENARIO_LOGIN = 'login';
+    const SCENARIO_REGISTER = 'register';
+
     public string $password_repeat = '';
     /**
      * {@inheritdoc}
@@ -36,11 +40,27 @@ class User extends \yii\db\ActiveRecord
         return 'user';
     }
 
+    public static function listOfUsers()
+    {
+        $users = self::find()
+                ->select([
+                    'login',
+                    'name',
+                    'surname',
+                    'dateUnlock'
+                ])
+                ->asArray()
+                ->all()
+                ;
+        return $users;
+    }
+    
+
     public function login() 
     {
         
         $this->token = yii::$app->security->generateRandomString();
-        $this->save('token');
+        $this->save();
     }
 
     /**
@@ -52,9 +72,10 @@ class User extends \yii\db\ActiveRecord
             [['name', 'surname', 'login', 'email', 'password'], 'required'],
             [['dateUnlock'], 'safe'],
             [['role_id'], 'integer'],
-            [['password_repeat'], 'required'],
+            [['password_repeat'], 'required','on' => self::SCENARIO_REGISTER],
             [['name', 'surname', 'patronymic', 'login', 'email', 'password', 'token'], 'string', 'max' => 255],
             [['login'], 'unique'],
+            [['token'], 'safe'],
             [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::class, 'targetAttribute' => ['role_id' => 'id']],
         ];
     }

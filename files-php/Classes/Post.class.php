@@ -308,7 +308,7 @@ class Post extends Data
     }
 
 
-    public function deletePost(string $user_id, string $role, string $id): bool
+    public function deletePost(string $user_id, string $role, string $id)
     {
         // var_dump($isAdmin);die;
         $textt = 'SELECT user_id '

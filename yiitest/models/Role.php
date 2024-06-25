@@ -34,10 +34,16 @@ class Role extends \yii\db\ActiveRecord
     }
 
 
-    public static function isAdmin(string $user_role_id): bool
+    public static function isAdmin(string $user_id): bool
     {
         // var_dump(Role::findOne(['title' => 'admin'])->id);die;
-        return $user_role_id == Role::findOne(['title' => 'admin'])->id;
+        $user_role_id = User::find()
+        ->select('role_id')
+        ->where(['id' => $user_id])
+        ->asArray()
+        ->one();
+        // var_dump( $user_role_id['role_id'] === Role::findOne(['title' => 'admin'])->id);die;
+        return $user_role_id['role_id'] === Role::findOne(['title' => 'admin'])->id;
     }
 
     /**

@@ -1,9 +1,11 @@
 function deleteComment(commentId)
 {
+    // ./yiitest/web/post/delete-post
+    // url: "./files-php/php-parts/delete-comment.php",    
     if (commentId) {
         $.ajax({
-            type: "get",
-            url: "./files-php/php-parts/delete-comment.php",    
+            type: "POST",
+            url: "./yiitest/web/comment/delete-comment",    
             data: {'comment_id': commentId},
             // dataType: "dataType",
             success: function (response) {

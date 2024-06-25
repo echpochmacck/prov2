@@ -12,7 +12,7 @@ function posts() {
     datatype: "json",
 
     success: function (data) {
-      arr = JSON.parse(data);
+      arr = data
       // console.log(arr);
       // const user = arr.user;
       const posts = arr;

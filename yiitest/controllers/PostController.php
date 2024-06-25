@@ -4,7 +4,9 @@ namespace app\controllers;
 
 
 use app\models\Post;
+use app\models\Role;
 use app\models\File;
+use Request;
 use yii\web\UploadedFile;
 use Yii;
 
@@ -13,16 +15,16 @@ class PostController extends \yii\web\Controller
 
     public function beforeAction($action)
     {
-        if ($action->id == 'posts' || $action->id == 'create-post') {
+        if ($action->id == 'posts' || $action->id == 'create-post' || $action->id = 'delete-post') {
             $this->enableCsrfValidation = false;
         }
         return parent::beforeAction($action);
     }
 
 
-    public static function actionTenPosts()
+    public function actionTenPosts()
     {
-        if (Yii::$app->request->isGet) {;
+        if (Yii::$app->request->isGet) {
             // $post = Yii::$app->request->post();
             $posts = Post::find()
                 ->select([
@@ -31,72 +33,54 @@ class PostController extends \yii\web\Controller
                     'preview',
                     'content',
                     'post.date',
-                    'user_id',
-                    'login'
-                    // 'user.link'
+                    'post.user_id',
+                    'login',
+                    'COUNT(comment.id) as numberOfComment'
                 ])
                 ->join('INNER JOIN', 'user', 'post.user_id = user.id')
+                ->join('LEFT JOIN', 'comment', 'comment.post_id = post.id')
                 ->orderBy('post.date desc')
+                ->groupBy('post.id')
                 ->limit(10)
                 ->asArray()
                 ->all();
-            echo json_encode($posts);
-        }
+            }
+            return $this->asJson($posts);
     }
 
-    public static function actionCreatePost()
+    public function actionCreatePost()
     {
 
         if ($post_id = yii::$app->request->get('postId')) {
             $post = Post::findOne($post_id);
-            echo json_encode($post->attributes);
-            // var_dump($post);die; 
+            return $this->asJson($post->attributes);
         }
 
         if (yii::$app->request->isPost) {
-            // var_dump('fdsf');die;
+            $arr = [];
+            
             if ($post_id = yii::$app->request->post('post_id')) {
-                $post = Post::findOne($post_id);
-                $post->load(yii::$app->request->post(), '');
-                // var_dump($post->attributes);
-                $arr = [];
-                if ($post->validate()) {
-                    $post->save(true);
-                    $arr['errors'] = '';
-                } else {
-                    $arr['errors'] = 'ошибка в полях';
-                }
-
-                echo json_encode($arr);
+                Post::redPost($post_id);
             } else {
-
-                $post = new Post();
-                $post->load(yii::$app->request->post(), '');
-                $post->date = date('Y-m-d H:i:s');
-                // var_dump($post);die;
-                if ($post->validate()) {
-                    $post->save();
-                    $arr = $post->attributes;
-                    if (!$_FILES['upload_image_post']['error']) {
-                        // var_dumdsp($_FILES['error']);die;
-                        $file = new File();
-                        $file->imageFile = UploadedFile::getInstanceByName('upload_image_post');
-                        $file->post_id = $post->findOne(['user_id' => $post->user_id, 'date' => $post->date])->id;
-                        // загрузка и сейв в бд
-                        if ($file->upload()) {
-                            $res = $file->save();
-                        }
-                        $arr['link'] = $file->link;
-                    }
-                    // var_dump($arr);
-                    // die;
-                    $arr['errors'] = '';
-                } else {
-                    $arr['errors'] = 'ошибка в полях';
-                }
-                echo json_encode($arr);
+                Post::createPost();
             }
         }
+       return $this->asJson($arr);
+    }
+
+
+
+    public function actionDeletePost()
+    {
+        $arr = [];
+        $arr['answer'] = 'ne norm';
+        if (yii::$app->request->isPost) {
+            $data = yii::$app->request->post();
+            if (Post::deletePost($data['user_id'], $data['post_id'],  Role::isAdmin($data['user_id']))) {
+                $arr['answer'] = 'norm';
+            }
+        }
+        echo json_encode($arr);
     }
 }
 // }

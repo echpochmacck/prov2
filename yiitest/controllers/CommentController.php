@@ -14,7 +14,7 @@ class CommentController extends \yii\web\Controller
 
     public function beforeAction($action)
     {
-        if ($action->id == 'create-comment') {
+        if ($action->id == 'create-comment' || $action->id == 'delete-comment') {
             $this->enableCsrfValidation = false;
         }
         return parent::beforeAction($action);
@@ -26,7 +26,7 @@ class CommentController extends \yii\web\Controller
     public static function actionCreateComment()
     {
         if (Yii::$app->request->isPost) {
-           $post = Yii::$app->request->post();
+            $post = Yii::$app->request->post();
             $comment = new Comment();
             $comment->load($post, '');
             if ($comment->validate()) {
@@ -36,16 +36,21 @@ class CommentController extends \yii\web\Controller
         }
     }
 
-    public static function actionListComment()
+    public  function actionListComment()
     {
         if ($post_id = Yii::$app->request->get('post_id')) {
-          
-            $comments = Comment::list($post_id);
-            echo json_encode($comments);   
-         }
-    }
-    
-   
 
+            $comments = Comment::list($post_id);
+            return $this->asJson($comments);
+        }
+    }
+
+    public static function actionDeleteComment()
+    {
+        if (Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
+            Comment::deleteComment($post['comment_id']);
+        }
+    }
 }
 // }

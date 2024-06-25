@@ -3,13 +3,14 @@ function getUsers() {
   $(".not-active").removeClass("active");
   $(".users").addClass("active");
   let str = "<tbody>";
+  // url: "./files-php/php-parts/users.php",
+
   $.ajax({
-    url: "./files-php/php-parts/users.php",
+    url: "./yiitest/web/admin/list-users",
     method: "post",
     datatype: "json",
     success: function (data) {
-      data = JSON.parse(data);
-      console.log(data);
+     
       data.forEach((value) => {
         str += `<tr>
               <th scope='row'>1</th>
