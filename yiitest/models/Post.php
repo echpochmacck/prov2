@@ -79,69 +79,56 @@ class Post extends \yii\db\ActiveRecord
 
 
 
-    public static function redPost(string $post_id)
+    public  function redPost(): bool
     {
-        $post = Post::findOne($post_id);
-        $post->load(yii::$app->request->post(), '');
-        if (!$_FILES['upload_image_post']['error']) {
-            // var_dumdsp($_FILES['error']);die;
+        $result = false;
+        if ($this->imageFile) {
             $link = File::find()
-                ->where(['post_id' => $post_id])
+                ->where(['post_id' => $this->id])
                 ->select(['link'])
                 ->asArray()
                 ->one();
-            // var_dump($link);die;
             if ($link) {
                 if (file_exists(__DIR__ . '/../../uploads/' . $link['link'])) {
                     unlink(__DIR__ . '/../../uploads/' . $link['link']);
                 }
             }
-            $file = File::findOne(['post_id' => $post_id]);
-            $file->imageFile = UploadedFile::getInstanceByName('upload_image_post');
-            $file->post_id = $post
-                ->findOne(['user_id' => $post->user_id, 'date' => $post->date])
-                ->id;
-            if ($file->upload()) {
-                $res = $file->save();
-            }
+            $file = File::findOne(['post_id' => $this->id]);
+            File::upload($this->imageFile);
+            $file = new File();
+            $file->link = $this->imageFile->name;
+            $file->post_id = $this->id;
+            $res = $file->save();
             $arr['link'] = $file->link;
         }
-        if ($post->validate()) {
-            $post->save(true);
-            $arr['errors'] = '';
-        } else {
-            $arr['errors'] = 'ошибка в полях';
-        }
+        if ($this->validate()) {
+            if ($this->save(true)) {
+                $result = true;
+            } 
+        } 
+
+        return $result;
     }
 
-    public static function createPost()
-    {   
-        $post = new Post();
-        $post->load(yii::$app->request->post(), '');
-        $post->date = date('Y-m-d H:i:s');
-        // var_dump($post);die;
-        if ($post->validate()) {
-            $post->save();
-            $arr = $post->attributes;
-            if (!$_FILES['upload_image_post']['error']) {
-                // var_dumdsp($_FILES['error']);die;
-                $file = new File();
-                $file->imageFile = UploadedFile::getInstanceByName('upload_image_post');
-                $file->post_id = $post
-                    ->findOne(['user_id' => $post->user_id, 'date' => $post->date])
-                    ->id;
-                // загрузка и сейв в бд
-                if ($file->upload()) {
+    public  function createPost(): bool
+    {
+        $result = false;
+        $this->date = date('Y-m-d H:i:s');
+        if ($this->validate()) {
+            if ($this->save()) {
+
+                if ($this->imageFile) {
+                    File::upload($this->imageFile);
+                    $file = new File();
+                    $file->link = $this->imageFile->name;
+                    $file->post_id = $this->id;
                     $res = $file->save();
+                    $arr['link'] = $file->link;
                 }
-                $arr['link'] = $file->link;
-            }
-            // var_dump($arr);
-            // die;
-            $arr['errors'] = '';
-        } else {
-            $arr['errors'] = 'ошибка в полях';
-        }
+                $result = true;
+            } 
+        } 
+        return $result;
     }
 
     public static function queryToDelPost(string $post_id)
@@ -156,19 +143,19 @@ class Post extends \yii\db\ActiveRecord
                 unlink(__DIR__ . '/../../uploads/' . $link['link']);
             }
         }
-        $post = Self::findOne($post_id);
+        $post = self::findOne($post_id);
         $post->delete();
     }
     public static function deletePost(string $user_id, string $post_id, bool $isAdmin = false)
     {
         $result = false;
         if ($isAdmin) {
-            Self::queryToDelPost($post_id);
+            self::queryToDelPost($post_id);
             $arr['answer'] = 'успешно удалил';
             $result = true;
         } else {
-            if (!Self::checkNumber($post_id)) {
-                Self::queryToDelPost($post_id);
+            if (!self::checkNumber($post_id)) {
+                self::queryToDelPost($post_id);
                 $result = true;
             }
         }

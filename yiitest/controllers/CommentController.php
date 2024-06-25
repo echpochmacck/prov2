@@ -49,7 +49,8 @@ class CommentController extends \yii\web\Controller
     {
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-            Comment::deleteComment($post['comment_id']);
+            $comment = Comment::findOne($post['comment_id']);
+            $comment->deleteComment();
         }
     }
 }

@@ -109,10 +109,9 @@ class Comment extends \yii\db\ActiveRecord
     }
 
 
-    public static function deleteComment(string $comment_id)
+    public function deleteComment()
     {
-        $comment = Self::findOne($comment_id);
-        $comment->delete();
+        $this->delete();
     }
 
     /**

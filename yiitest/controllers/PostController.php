@@ -48,21 +48,30 @@ class PostController extends \yii\web\Controller
             return $this->asJson($posts);
     }
 
-    public function actionCreatePost()
+    public function actionCreatePost($postId = '')
     {
-
-        if ($post_id = yii::$app->request->get('postId')) {
-            $post = Post::findOne($post_id);
+        if ($this->request->isGet) {
+            $post = Post::findOne($postId);
             return $this->asJson($post->attributes);
         }
-
         if (yii::$app->request->isPost) {
             $arr = [];
-            
             if ($post_id = yii::$app->request->post('post_id')) {
-                Post::redPost($post_id);
+                $post = Post::findOne($post_id);
+                $post->load(yii::$app->request->post(), '');
+                $post->imageFile = UploadedFile::getInstanceByName('upload_image_post');
+                if (!$post->redPost()) {
+                    $arr['errors']='ne norm';
+                }
             } else {
-                Post::createPost();
+                $post = new Post();
+                $post->load(yii::$app->request->post(), '');
+                $post->imageFile = UploadedFile::getInstanceByName('upload_image_post');
+                if ($post->createPost()) {
+                    $arr['errors']='';
+                }else {
+                    $arr['errors']='ne norm';
+                }
             }
         }
        return $this->asJson($arr);
@@ -76,7 +85,7 @@ class PostController extends \yii\web\Controller
         $arr['answer'] = 'ne norm';
         if (yii::$app->request->isPost) {
             $data = yii::$app->request->post();
-            if (Post::deletePost($data['user_id'], $data['post_id'],  Role::isAdmin($data['user_id']))) {
+            if (Post::deletePost($data['user_id'],  $data['post_id'],  Role::isAdmin($data['user_id']))) {
                 $arr['answer'] = 'norm';
             }
         }

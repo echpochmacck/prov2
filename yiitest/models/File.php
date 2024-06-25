@@ -43,21 +43,14 @@ class File extends \yii\db\ActiveRecord
         ];
     }
 
-    public function upload()
+    public static function upload($imageFile)
     {
-        if ($this->validate()) {
-            // var_dump($this->imageFile, __DIR__.'/../../uploads/'. $this->imageFile->name. '.' .pathinfo($this->imageFile->name, PATHINFO_EXTENSION));die;
-            $extension = $this->imageFile->getExtension();
-            // var_dump($extension);die;
-            $this->imageFile->name = yii::$app->security->generateRandomString() . '.' . $extension;
-             if ($this->imageFile->saveAs(__DIR__.'/../../uploads/'. $this->imageFile->name)) {
-                $this->link = $this->imageFile->name;
+            $extension = $imageFile->getExtension();
+            $imageFile->name = yii::$app->security->generateRandomString() . '.' . $extension;
+             if ($imageFile->saveAs(__DIR__.'/../../uploads/'. $imageFile->name)) {
                  return true;
              }
-        } else {
-            return false;
-        }
-
+     
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "user".
@@ -25,7 +26,7 @@ use Yii;
  * @property Post[] $posts
  * @property Role $role
  */
-class User extends \yii\db\ActiveRecord
+class User extends \yii\db\ActiveRecord 
 {
 
     const SCENARIO_LOGIN = 'login';
@@ -54,7 +55,7 @@ class User extends \yii\db\ActiveRecord
                 ;
         return $users;
     }
-    
+
 
     public function login() 
     {
