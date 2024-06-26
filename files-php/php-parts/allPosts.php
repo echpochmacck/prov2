@@ -12,7 +12,7 @@ if ($user->request->get('offset') == 0 || $user->request->get('offset')) {
     $offset = $pageOf;
     // var_dump($post->pages($limit, $offset, $pageOf));
     $arr['count'] = $count;
-    $arr['user'] = $user;
+    // $arr['user'] = $user;
     $arr['posts'] =  $post->list($limit, $offset);
     $arr['pages'] = $post->pages($limit, $pageOf);
     echo json_encode($arr);

@@ -18,7 +18,7 @@ function getUsers() {
               <td>${value["surname"]}</td>
               <td>${value["login"]}</td>
               <td>${value["email"]}</td>"`;
-        if (sessionStorage.getItem("id") === value["id"]) {
+        if (sessionStorage.getItem("id") == value["id"]) {
           str += `<td>
                   себя нельзя блокировать 
                   </td>

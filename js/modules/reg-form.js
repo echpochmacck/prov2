@@ -18,7 +18,7 @@ function getReg() {
 		data: formData,
 		success: (response) => {
 			// console.log(response)
-			const obj = $.parseJSON(response);
+			const obj =response;
 			if (obj.token) {
 				sessionStorage.setItem('userToken', obj.token);
 				sessionStorage.setItem('role', obj.role);

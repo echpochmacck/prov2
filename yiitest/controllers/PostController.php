@@ -15,7 +15,7 @@ class PostController extends \yii\web\Controller
 
     public function beforeAction($action)
     {
-        if ($action->id == 'posts' || $action->id == 'create-post' || $action->id = 'delete-post') {
+        if ($action->id == 'posts' || $action->id == 'create-post' || $action->id = 'delete-post'  || $action->id = 'all-posts') {
             $this->enableCsrfValidation = false;
         }
         return parent::beforeAction($action);
@@ -44,8 +44,8 @@ class PostController extends \yii\web\Controller
                 ->limit(10)
                 ->asArray()
                 ->all();
-            }
-            return $this->asJson($posts);
+        }
+        return $this->asJson($posts);
     }
 
     public function actionCreatePost($postId = '')
@@ -61,23 +61,34 @@ class PostController extends \yii\web\Controller
                 $post->load(yii::$app->request->post(), '');
                 $post->imageFile = UploadedFile::getInstanceByName('upload_image_post');
                 if (!$post->redPost()) {
-                    $arr['errors']='ne norm';
+                    $arr['errors'] = 'ne norm';
                 }
             } else {
                 $post = new Post();
                 $post->load(yii::$app->request->post(), '');
                 $post->imageFile = UploadedFile::getInstanceByName('upload_image_post');
                 if ($post->createPost()) {
-                    $arr['errors']='';
-                }else {
-                    $arr['errors']='ne norm';
+                    $arr['errors'] = '';
+                } else {
+                    $arr['errors'] = 'ne norm';
                 }
             }
         }
-       return $this->asJson($arr);
+        return $this->asJson($arr);
     }
 
-
+    public function actionAllPosts($offset = 0)
+    {
+        $limit = 3;
+        $count  = ceil(Post::checkCount() / $limit);
+        // var_dump($offset);die;
+        // var_dump($post->pages($limit, $offset, $pageOf));
+        $arr['count'] = $count;
+        // $arr['user'] = $user;
+        $arr['posts'] =  Post::list($limit, $offset);
+        $arr['pages'] = Post::pages($limit, $count, Post::checkCount(), $offset);
+        return $this->asJson($arr);
+    }
 
     public function actionDeletePost()
     {

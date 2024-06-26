@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use DateTime;
 use Yii;
 use yii\web\IdentityInterface;
 
@@ -48,6 +49,8 @@ class User extends \yii\db\ActiveRecord
                     'login',
                     'name',
                     'surname',
+                    'email',
+                    'id',
                     'dateUnlock'
                 ])
                 ->asArray()
@@ -105,6 +108,17 @@ class User extends \yii\db\ActiveRecord
             'token' => 'Token',
             'role_id' => 'Role ID',
         ];
+    }
+
+    public function tempBlock(string $dateUnlock): bool
+    {
+        $result = false;
+        $date = new DateTime($dateUnlock);
+        $this->dateUnlock = $date->format('Y-m-d H:i:s');
+        if ($this->save()) {
+            $result = true;
+        }
+        return $result;
     }
 
     /**

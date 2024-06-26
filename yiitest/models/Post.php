@@ -65,6 +65,95 @@ class Post extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function list(int|bool $number = false, int|bool|string $offset = false)
+    {
+        if ($number && !$offset) {
+
+            $arr = Post::find()
+                ->select([
+                    'post.id',
+                    'content',
+                    'preview',
+                    'post.date',
+                    'user.id as user_id',
+                    // 'avatar.link as user_link',
+                    'title',
+                    'login',
+                    'post.user_id',
+                    'count(comment.id) as numberOfComments'
+                ])
+                ->innerJoin('user', 'user.id = post.user_id')
+                // ->innerJoin('avatar', 'user.id = avatar.user_id')
+                ->leftJoin('comment', 'post.id = comment.post_id')
+                ->groupBy('post.id')
+                ->orderBy('post.date desc')
+                ->limit($number)
+                ->asArray()
+                ->all();
+            // var_dump($arr);
+            // die;
+            // return $arr;
+        }
+
+        if ($number && $offset) {
+
+            $arr = Post::find()
+                ->select([
+                    'post.id',
+                    'content',
+                    'preview',
+                    'post.date',
+                    'user.id as user_id',
+                    // 'avatar.link as user_link',
+                    'title',
+                    'login',
+                    'post.user_id',
+                    'count(comment.id) as numberOfComments'
+                ])
+                ->innerJoin('user', 'user.id = post.user_id')
+                ->leftJoin('comment', 'post.id = comment.post_id')
+                ->groupBy('post.id')
+                ->orderBy('post.date desc')
+                ->limit($number)
+                ->offset(3*$offset)
+                ->asArray()
+                ->all();
+            // var_dump($arr);
+            // die;
+            
+        }
+        return $arr;
+    }
+
+
+    public static function pages(int $limit, $totalPages, $count, string|bool $pageOf = ''): array|bool
+    {
+
+       
+            if (!$pageOf) {
+                $n = 1;
+            } else {
+                if (($pageOf+3)*$limit >= $count) {
+                    
+                    $n = $totalPages - 3;
+                } else {
+                $n = $pageOf;
+                }
+            }
+            $end = $n+3;
+            while ($n <= $end) {
+                $arrk['page'] = $n;
+                $arr[] = $arrk;
+                if ($n*$limit > $count){
+                    break;
+                }
+                $n++;
+            }
+
+        // var_dump($arr);
+        return $arr;
+    }
+
 
     public static function checkNumber($post_id)
     {
@@ -104,10 +193,19 @@ class Post extends \yii\db\ActiveRecord
         if ($this->validate()) {
             if ($this->save(true)) {
                 $result = true;
-            } 
-        } 
+            }
+        }
 
         return $result;
+    }
+
+    public static function checkCount()
+    {
+        $arr =  Post::find()
+            ->select('COUNT(*)')
+            ->asArray()
+            ->one();
+        return $arr['COUNT(*)'];
     }
 
     public  function createPost(): bool
@@ -126,8 +224,8 @@ class Post extends \yii\db\ActiveRecord
                     $arr['link'] = $file->link;
                 }
                 $result = true;
-            } 
-        } 
+            }
+        }
         return $result;
     }
 

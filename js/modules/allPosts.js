@@ -36,15 +36,16 @@ function allPosts() {
 	// console.log(offset);
 	data['offset'] = offset;
 
+	// url: "./files-php/php-parts/allPosts.php",
 	$.ajax({
-		url: "./files-php/php-parts/allPosts.php",
+		url: "./yiitest/web/post/all-posts",
 		method: "GET",
 		data : data,
 		datatype: "json",
 
 		success: function (data) {
 			if (data) {
-			arr = JSON.parse(data);
+			arr = data;
 			// console.log(arr);
 			const user = arr.user;
 			const posts = arr.posts;
@@ -57,12 +58,12 @@ function allPosts() {
 				<h3 class='mb-2'><a href='post-action.php?post-id=${value.id}'>${value.title}</a></h3>
 				   <div class='meta-wrap'>
 					   <p class='meta'>`;
-				if (value.user.link) {
-					html += `<div class='vcard bio'> <img src = 'files-php/uploads/${value.user.link}' width='100px' height = '100px' alt='Image placeholder'> </div>`;
-				}
-				html += `<span class='text text-3'>${value.user.login}</span>
+				// if (value['user.link']) {
+				// 	html += `<div class='vcard bio'> <img src = 'files-php/uploads/${value['user.link']}' width='100px' height = '100px' alt='Image placeholder'> </div>`;
+				// }
+				html += `<span class='text text-3'>${value.login}</span>
 						<span><i class='icon-calendar mr-2'></i>${value.date}</span>
-					  <span><i class='icon-comment2 mr-2'></i> ${value.numberOfComment} Comment</span>
+					  <span><i class='icon-comment2 mr-2'></i> ${value.numberOfComments} Comment</span>
 				   </p>
 								  </div>
 								   <p class='mb-4'>${value.preview}</p>
@@ -71,7 +72,7 @@ function allPosts() {
 								   <a href= "" class='btn-custom link ' data-section="more" data-id=${value.id}>
 										 Подробнее... <span class='ion-ios-arrow-forward'></span></a>
 								</div>`;
-				if (value.user.id === sessionStorage.getItem('id')) {
+				if (value.user_id === sessionStorage.getItem('id')) {
 					html += `<div>
 				    <a href='' style='font-size: 1.8em;' class='link'  data-section='fixPost' data-postid= ${value.id} title='Редактировать'>🖍</a>
 					 <a href='' class='link'     data-section='remPost'  data-postid= ${value.id} style='font-size: 1.8em;' title='Удалить'>🗑</a>

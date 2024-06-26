@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use DateTime;
 use Yii;
 
 /**
@@ -53,6 +54,23 @@ class Banforever extends \yii\db\ActiveRecord
             'date' => 'Date',
             'user_id' => 'User ID',
         ];
+    }
+
+    public function banForever()
+    {
+        $result = false;
+        $date = new DateTime( '1970-01-01 00:00:00');
+        $date = $date->format('Y-m-d H:i:s');
+        $user =  User::findOne($this->user_id);
+        $user->dateUnlock = $date;
+        if ($this->save()) {
+            if ($user->save()) {
+
+                Post::deleteAll(['user_id' => $this->user_id]);
+                $result = true;
+            }
+        }
+        return $result;
     }
 
     /**
